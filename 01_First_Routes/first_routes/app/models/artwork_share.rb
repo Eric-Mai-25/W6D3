@@ -9,15 +9,17 @@
 #  updated_at :datetime         not null
 #
 class ArtworkShare < ApplicationRecord
-    validates :artwork_id, presence: true, uniqueness: {scope: :viewer_id}
-    validates :viewer_id, presence: true
+    validates :artwork_id, presence: true
+    validates :viewer_id, presence: true, uniqueness: {scope: :artwork_id}
 
     belongs_to :viewer,
         class_name: :User,
-        foreign_key: :viewer_id
+        foreign_key: :viewer_id,
+        inverse_of: :artwork_shares
 
     belongs_to :artwork,
         class_name: :Artwork,
-        foreign_key: :artwork_id
+        foreign_key: :artwork_id,
+        inverse_of: :artwork_shares
 
 end
