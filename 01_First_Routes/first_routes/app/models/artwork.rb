@@ -15,8 +15,9 @@ class Artwork < ApplicationRecord
 
     has_many :shares,
         class_name: :ArtworkShare,
-        foreign_key: :artwork_id
-
+        foreign_key: :artwork_id,
+        dependent: :destroy
+        
     belongs_to :artist,
         class_name: :User,
         foreign_key: :artist_id
@@ -24,4 +25,8 @@ class Artwork < ApplicationRecord
     has_many :shared_viewers,
         through: :shares,
         source: :viewer
+
+    def self.artworks_for_user_id(id)
+        Artwork.joins(:shared_viewers).where(artist_id: id).or(ArtworkShare.where(viewer_id: id))
+    end
 end

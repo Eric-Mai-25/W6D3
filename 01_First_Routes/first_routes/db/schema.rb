@@ -20,7 +20,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_23_233831) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["artwork_id", "viewer_id"], name: "index_artwork_shares_on_artwork_id_and_viewer_id", unique: true
-    t.index ["viewer_id"], name: "index_artwork_shares_on_viewer_id", unique: true
+    t.index ["viewer_id"], name: "index_artwork_shares_on_viewer_id"
   end
 
   create_table "artworks", force: :cascade do |t|

@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     end
 
     def create
-        user = User.new(user_permit)
+        user = User.new(user_params)
         # replace the `user_attributes_here` with the actual attribute keys
         if user.save
             render json: user
@@ -18,22 +18,37 @@ class UsersController < ApplicationController
 
     def show
         user = User.find_by(id: params[:id])
-        render json: user
+        if user.nil?
+            render json: ['No user found'], status: 404 
+        else
+            render json: user
+        end
     end
 
     def update 
         user = User.find_by(id: params[:id])
-        user.update(user_permit)
-        redirect_to user_url(user)
+        if user.nil?
+            render json: ['No user found'], status: 404 
+        elsif user.update(user_params)
+            redirect_to user_url(user)
+        else
+            render json: user.errors.full_messages, status: :unprocessable_entity
+        end
     end
 
     def destroy
         user = User.find_by(id: params[:id])
-        user.destroy
-        redirect_to users_url()
+        if user.nil?
+            render json: ['No user found'], status: 404 
+        else
+            user.destroy
+            redirect_to users_url()
+        end
     end
 
-    def user_permit
-        params.require(:user).permit(:name , :email)
+    private
+
+    def user_params
+        params.require(:user).permit(:username)
     end
 end

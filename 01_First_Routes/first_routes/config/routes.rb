@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
-  resources :users
+  resources :users, only: [:index, :create, :update, :destroy, :show]
+  resources :artworks, only: [:create, :update, :destroy, :show]
+  resources :artwork_shares, only: [:create, :destroy]
+
+  resources :users do
+    resources :artworks, only: [:index]
+  end
+  
+  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # get '/users', to: 'users#index'
