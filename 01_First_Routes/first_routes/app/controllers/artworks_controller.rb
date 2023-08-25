@@ -4,8 +4,6 @@ class ArtworksController < ApplicationController
         render json: artworks
     end
 
-
-
     def create
         artwork = Artwork.new(artwork_params)
         # replace the `artwork_attributes_here` with the actual attribute keys

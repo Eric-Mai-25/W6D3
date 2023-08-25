@@ -27,6 +27,10 @@ class Artwork < ApplicationRecord
         through: :artwork_shares,
         source: :viewer
 
+    has_many :comments,
+        foreign_key: :artwork_id,
+        class_name: :Comment
+
     def self.artworks_for_user_id(id)
         Artwork.joins(:shared_viewers).where(artist_id: id).or(ArtworkShare.where(viewer_id: id))
     end
